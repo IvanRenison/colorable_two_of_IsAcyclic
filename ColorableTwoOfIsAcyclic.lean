@@ -1,1 +1,1 @@
-import ColorableTwoOfIsAcyclic.Basic
+import ColorableTwoOfIsAcyclic.Lemma
