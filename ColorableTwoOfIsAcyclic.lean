@@ -1,2 +1,3 @@
 import ColorableTwoOfIsAcyclic.Lemma
 import ColorableTwoOfIsAcyclic.List
+import ColorableTwoOfIsAcyclic.Walk
