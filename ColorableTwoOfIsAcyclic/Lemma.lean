@@ -16,7 +16,8 @@ lemma diff_dist_adj (u v w : V) (hG : G.Connected) (hadj : SimpleGraph.Adj G v w
   obtain h | h | h := lt_trichotomy (G.dist u v) (G.dist u w)
   · right
     left
-    linarith
+    rw [hdistvw] at h1
+    exact Nat.le_antisymm h1 h
   · simp [h]
   · right
     right
