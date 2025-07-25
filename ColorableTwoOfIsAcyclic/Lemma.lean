@@ -30,8 +30,10 @@ lemma Walk.IsPath.concat_ofIsPath {u v w : V} {p : G.Walk u v} (hp : p.IsPath) (
     (hw : w ∉ p.support) : (p.concat hadj).IsPath := by
   refine Walk.IsPath.mk' ?_
   rw [Walk.support_concat, List.nodup_concat]
-  apply And.intro hw
-  sorry
+  constructor
+  · exact hw
+  · rw [isPath_def] at hp
+    assumption
 
 -- Not used
 lemma IsTree.walk_length_eq_dist_of_IsPath (hG : G.IsTree) {u v : V} {p : G.Walk u v}
