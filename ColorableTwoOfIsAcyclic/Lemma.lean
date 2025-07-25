@@ -10,13 +10,9 @@ variable {V : Type} {G : SimpleGraph V}
 lemma diff_dist_adj (u v w : V) (hG : G.Connected) (hadj : SimpleGraph.Adj G v w) :
     G.dist u w = G.dist u v ∨ G.dist u w = G.dist u v + 1 ∨ G.dist u w = G.dist u v - 1 := by
   have hdistvw : G.dist v w = 1 := dist_eq_one_iff_adj.mpr hadj
-  by_cases huv : u = v
-  · simp only [huv, hdistvw, G.dist_self, or_true, true_or]
-  have hdistuv : 0 < G.dist u v := hG.pos_dist_of_ne huv
+  have hdistwv : G.dist w v = 1 := dist_eq_one_iff_adj.mpr hadj.symm
   have h1 : G.dist u w ≤ G.dist u v + G.dist v w := hG.dist_triangle
-  rw [hdistvw] at h1
   have h2 : G.dist u v ≤ G.dist u w + G.dist w v := hG.dist_triangle
-  rw [dist_eq_one_iff_adj.mpr (G.adj_symm hadj)] at h2
   obtain h | h | h := lt_trichotomy (G.dist u v) (G.dist u w)
   · right
     left
@@ -144,11 +140,14 @@ noncomputable def IsTree.coloring_two_of_elem (hG : G.IsTree) (u : V) : G.Colori
   · rw [← hB] at h
     omega
 
-variable [inst : Nonempty V]
-
-noncomputable def IsTree.coloring_two (hG : G.IsTree) : G.Coloring (Fin 2) :=
-  let u : V := Classical.choice inst
-  hG.coloring_two_of_elem u
+noncomputable def IsTree.coloring_two (hG : G.IsTree) : G.Coloring (Fin 2) := by
+  by_cases inst : Nonempty V
+  · let u : V := Classical.choice inst
+    exact hG.coloring_two_of_elem u
+  · exact Coloring.mk (fun _ ↦ 0) <| by
+      intro v
+      have hf : False := not_nonempty_iff_imp_false.mp inst v
+      exact hf.elim
 
 lemma IsTree.colorable_two (hG : G.IsTree) : G.Colorable 2 :=
   Nonempty.intro hG.coloring_two
