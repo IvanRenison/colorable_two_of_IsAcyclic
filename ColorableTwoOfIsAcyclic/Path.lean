@@ -15,8 +15,8 @@ lemma Walk.IsPath.mem_support_iff_exists_append {u v w : V} {p : G.Walk u v} (hp
     have hq : q.IsPath := hqr'.of_append_left
     have hr : r.IsPath := hqr'.of_append_right
     exact ⟨q, r, hq, hr, hqr⟩
-  · intro ⟨q, r, hqr⟩
-    exact p.mem_support_iff_exists_append.mpr ⟨q, r, hqr.right.right⟩
+  · intro ⟨q, r, hq, hr, hqr⟩
+    exact p.mem_support_iff_exists_append.mpr ⟨q, r, hqr⟩
 
 lemma Walk.IsPath.ne_of_append {u v w : V} {p : G.Walk u v}
     {q : G.Walk v w} (hpq : (p.append q).IsPath) {x y : V} (hyv : y ≠ v) (hx : x ∈ p.support)
