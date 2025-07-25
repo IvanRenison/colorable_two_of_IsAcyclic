@@ -46,7 +46,7 @@ lemma IsTree.IsPath_iff_walk_length_eq_dist (hG : G.IsTree) {u v : V} (p : G.Wal
 
 
 lemma IsAcyclic.mem_support_of_ne_mem_support_of_adj_of_isPath (hG : G.IsAcyclic) {u v w : V}
-  {p : G.Walk u v} {q : G.Walk u w}
+    {p : G.Walk u v} {q : G.Walk u w}
     (hp : p.IsPath) (hq : q.IsPath) (hadj : G.Adj v w) (hv : v ∉ q.support) :
     w ∈ p.support := by
   let r := q.concat hadj.symm
