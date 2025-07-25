@@ -18,7 +18,7 @@ lemma Walk.IsPath.mem_support_iff_exists_append {u v w : V} {p : G.Walk u v} (hp
   · intro ⟨q, r, hqr⟩
     exact p.mem_support_iff_exists_append.mpr ⟨q, r, hqr.right.right⟩
 
-lemma Walk.IsPath.aux {u v w : V} {p : G.Walk u v}
+lemma Walk.IsPath.ne_of_append {u v w : V} {p : G.Walk u v}
     {q : G.Walk v w} (hpq : (p.append q).IsPath) {x y : V} (hyv : y ≠ v) (hx : x ∈ p.support)
     (hy : y ∈ q.support) : x ≠ y := by
   rw [isPath_def, support_append, List.nodup_append] at hpq
@@ -31,6 +31,6 @@ lemma Walk.IsPath.not_mem_left_of_mem_right_of_ne_of_IsPath_append {u v w : V} {
   intro hxp
   have hp : p.IsPath := of_append_left hpq
   have hq : q.IsPath := of_append_right hpq
-  exact hpq.aux hxv hxp hxq rfl
+  exact hpq.ne_of_append hxv hxp hxq rfl
 
 end SimpleGraph
