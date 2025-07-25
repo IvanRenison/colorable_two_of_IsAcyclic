@@ -60,7 +60,7 @@ lemma IsAcyclic.mem_support_of_ne_mem_support_of_adj_of_isPath (hG : G.IsAcyclic
   simp at h
   rw [h]
   unfold r
-  exact q.mem_concat_support hadj.symm
+  exact q.end_mem_support_concat hadj.symm
 
 lemma IsAcyclic.ne_mem_support_of_support_of_adj_of_isPath (hG : G.IsAcyclic) {u v w : V}
     {p : G.Walk u v} {q : G.Walk u w} (hp : p.IsPath) (hq : q.IsPath) (hadj : G.Adj v w)
