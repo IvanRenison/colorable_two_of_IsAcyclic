@@ -82,12 +82,22 @@ lemma IsTree.diff_dist_adj (hG : G.IsTree) (u v w : V) (hadj : SimpleGraph.Adj G
   have h := SimpleGraph.diff_dist_adj u v w hG.isConnected hadj
   have hne := hG.dist_ne_of_adj u hadj
   rcases h with h₁ | h₂ | h₃
-  · exfalso; apply hne; rw [h₁]
-  · right; exact h₂.symm
+  · exfalso
+    apply hne
+    rw [h₁]
+  · right
+    exact h₂.symm
   · left
-    calc G.dist u v = (G.dist u v - 1) + 1 := Nat.sub_add_cancel (hG.isConnected.pos_dist_of_ne (by
-      intro eq; rw [eq] at h₃; simp at h₃; exact Nat.succ_ne_zero _ h₃))
-               ... = G.dist u w + 1 := by rw [h₃]
+    have : 0 < G.dist u v := hG.isConnected.pos_dist_of_ne (by
+      intro h
+      subst h
+      have h₁ := dist_eq_one_iff_adj.mpr hadj
+      rw [dist_self] at h₃
+      simp only [Nat.zero_sub] at h₃
+      rw [h₃] at h₁
+      exact absurd h₁ (by norm_num))
+    rw [h₃]
+    exact Eq.symm (Nat.sub_add_cancel this)
 
 noncomputable def IsTree.coloring_two_of_elem (hG : G.IsTree) (u : V) : G.Coloring (Fin 2) :=
   Coloring.mk (fun v ↦ ⟨G.dist u v % 2, Nat.mod_lt (G.dist u v) Nat.zero_lt_two⟩) <| by
