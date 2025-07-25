@@ -140,14 +140,9 @@ noncomputable def IsTree.coloring_two_of_elem (hG : G.IsTree) (u : V) : G.Colori
   · rw [← hB] at h
     omega
 
-noncomputable def IsTree.coloring_two (hG : G.IsTree) : G.Coloring (Fin 2) := by
-  by_cases inst : Nonempty V
-  · let u : V := Classical.choice inst
-    exact hG.coloring_two_of_elem u
-  · exact Coloring.mk (fun _ ↦ 0) <| by
-      intro v
-      have hf : False := not_nonempty_iff_imp_false.mp inst v
-      exact hf.elim
+noncomputable def IsTree.coloring_two (hG : G.IsTree) : G.Coloring (Fin 2) :=
+  let u : V := Classical.choice hG.isConnected.nonempty
+  hG.coloring_two_of_elem u
 
 lemma IsTree.colorable_two (hG : G.IsTree) : G.Colorable 2 :=
   Nonempty.intro hG.coloring_two
