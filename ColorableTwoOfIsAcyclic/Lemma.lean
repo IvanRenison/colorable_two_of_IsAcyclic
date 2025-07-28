@@ -1,5 +1,4 @@
 import Mathlib
-import ColorableTwoOfIsAcyclic.List
 import ColorableTwoOfIsAcyclic.Walk
 import ColorableTwoOfIsAcyclic.Path
 
