@@ -22,13 +22,6 @@ lemma diff_dist_adj (u v w : V) (hG : G.Connected) (hadj : SimpleGraph.Adj G v w
     right
     omega
 
-lemma Walk.IsPath.isPath_concat {u v w : V} {p : G.Walk u v} (hp : p.IsPath) (hadj : G.Adj v w)
-    (hw : w ∉ p.support) : (p.concat hadj).IsPath := by
-  apply Walk.IsPath.mk'
-  rw [Walk.support_concat, List.nodup_concat]
-  rw [isPath_def] at hp
-  apply And.intro hw hp
-
 -- Not used
 lemma IsTree.walk_length_eq_dist_of_IsPath (hG : G.IsTree) {u v : V} {p : G.Walk u v}
     (hp : p.IsPath) : p.length = G.dist u v := by
@@ -49,7 +42,7 @@ lemma IsAcyclic.mem_support_of_ne_mem_support_of_adj_of_isPath (hG : G.IsAcyclic
     (hp : p.IsPath) (hq : q.IsPath) (hadj : G.Adj v w) (hv : v ∉ q.support) :
     w ∈ p.support := by
   let r := q.concat hadj.symm
-  have hr : r.IsPath := hq.isPath_concat hadj.symm hv
+  have hr : r.IsPath := hq.concat hv hadj.symm
   have h := isAcyclic_iff_path_unique.mp hG ⟨p, hp⟩ ⟨r, hr⟩
   simp at h
   rw [h]
@@ -81,7 +74,7 @@ lemma IsAcyclic.path_concat (hG : G.IsAcyclic) {u v w : V} {p : G.Walk u v} {q :
     (hp : p.IsPath) (hq : q.IsPath) (hadj : G.Adj v w) (hv : v ∈ q.support) :
     q = p.concat hadj := by
   have hw : w ∉ p.support := hG.ne_mem_support_of_support_of_adj_of_isPath hq hp hadj.symm hv
-  have hpw : (p.concat hadj).IsPath := hp.isPath_concat hadj hw
+  have hpw : (p.concat hadj).IsPath := hp.concat hw hadj
   have h := isAcyclic_iff_path_unique.mp hG ⟨q, hq⟩ ⟨p.concat hadj, hpw⟩
   simp at h
   exact h
