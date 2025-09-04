@@ -1,5 +1,4 @@
 import Mathlib
-import ColorableTwoOfIsAcyclic.Walk
 import ColorableTwoOfIsAcyclic.Path
 
 namespace SimpleGraph
@@ -47,7 +46,8 @@ lemma IsAcyclic.mem_support_of_ne_mem_support_of_adj_of_isPath (hG : G.IsAcyclic
   simp at h
   rw [h]
   unfold r
-  exact q.end_mem_support_concat hadj.symm
+  apply q.support_subset_support_concat
+  exact q.end_mem_support
 
 lemma IsAcyclic.ne_mem_support_of_support_of_adj_of_isPath (hG : G.IsAcyclic) {u v w : V}
     {p : G.Walk u v} {q : G.Walk u w} (hp : p.IsPath) (hq : q.IsPath) (hadj : G.Adj v w)
