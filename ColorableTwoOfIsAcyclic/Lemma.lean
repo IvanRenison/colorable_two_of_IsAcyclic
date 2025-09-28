@@ -5,22 +5,6 @@ namespace SimpleGraph
 
 variable {V : Type} {G : SimpleGraph V}
 
-lemma diff_dist_adj (u v w : V) (hG : G.Connected) (hadj : SimpleGraph.Adj G v w) :
-    G.dist u w = G.dist u v ∨ G.dist u w = G.dist u v + 1 ∨ G.dist u w = G.dist u v - 1 := by
-  have hdistvw : G.dist v w = 1 := dist_eq_one_iff_adj.mpr hadj
-  have hdistwv : G.dist w v = 1 := dist_eq_one_iff_adj.mpr hadj.symm
-  have h1 : G.dist u w ≤ G.dist u v + G.dist v w := hG.dist_triangle
-  have h2 : G.dist u v ≤ G.dist u w + G.dist w v := hG.dist_triangle
-  obtain h | h | h := lt_trichotomy (G.dist u v) (G.dist u w)
-  · right
-    left
-    rw [hdistvw] at h1
-    exact Nat.le_antisymm h1 h
-  · simp [h]
-  · right
-    right
-    omega
-
 -- Not used
 lemma IsTree.walk_length_eq_dist_of_IsPath (hG : G.IsTree) {u v : V} {p : G.Walk u v}
     (hp : p.IsPath) : p.length = G.dist u v := by
@@ -100,7 +84,7 @@ lemma IsTree.dist_ne_of_adj (hG : G.IsTree) (u : V) {v w : V} (hadj : SimpleGrap
 
 lemma IsTree.diff_dist_adj (hG : G.IsTree) (u v w : V) (hadj : SimpleGraph.Adj G v w) :
     G.dist u v = G.dist u w + 1 ∨ G.dist u v + 1 = G.dist u w := by
-  have h := SimpleGraph.diff_dist_adj u v w hG.isConnected hadj
+  have h := hG.isConnected.diff_dist_adj (u := u) hadj
   have hne := hG.dist_ne_of_adj u hadj
   rcases h with h₁ | h₂ | h₃
   · exfalso
