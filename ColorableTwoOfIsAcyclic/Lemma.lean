@@ -26,7 +26,7 @@ lemma IsAcyclic.mem_support_of_ne_mem_support_of_adj_of_isPath (hG : G.IsAcyclic
   let r := q.concat hadj.symm
   have hr : r.IsPath := hq.concat hv hadj.symm
   have h := isAcyclic_iff_path_unique.mp hG ⟨p, hp⟩ ⟨r, hr⟩
-  simp at h
+  simp only [Subtype.mk.injEq] at h
   rw [h]
   unfold r
   apply q.support_subset_support_concat
@@ -47,6 +47,7 @@ lemma IsAcyclic.ne_mem_support_of_support_of_adj_of_isPath (hG : G.IsAcyclic) {u
   intro hxp
   exact hp₀p₁.ne_of_mem_support_of_append hvw hxp hvp₁ rfl
 
+-- Not used
 lemma IsAcyclic.mem_support_of_adj_of_isPath (hG : G.IsAcyclic) {u v w : V} {p : G.Walk u v}
     {q : G.Walk u w} (hp : p.IsPath) (hq : q.IsPath) (hadj : G.Adj v w) :
     v ∈ q.support ↔ w ∉ p.support := by
